@@ -15,6 +15,5 @@ class PayoutEnums(models.IntegerChoices):
 class ClientStatusEnums(models.IntegerChoices):
     ACTIVE = 1, 'АКТИВНЫЙ'
     INACTIVE = 2, 'НЕАКТИВНЫЙ'
-    THREE_DAYS = 3, '3 ДНЯ ДО ЗАВЕРШЕНИЯ'
 
 
