@@ -53,3 +53,5 @@ node_modules/
 web/app/media/
 web/app/.env
 bot/.env
+web/persistentdata/certbot
+web/certbot/www/.well-known/acme-challenge
