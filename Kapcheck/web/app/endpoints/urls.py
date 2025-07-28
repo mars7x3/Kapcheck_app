@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views.crm import DashboardView, CategoryPartnerView, PartnerProfileView, ClientView, PaymentView, PayoutView, \
     PrizeView, GoalView
 from .views.tg_bot import PartnerBotDataView
-from .views.webhook import WHClientCreateView, WHPaymentCreateView, WHExpiringView
+from .views.webhook import WHClientView, WHPaymentCreateView, WHExpiringView
 
 router = DefaultRouter()
 
@@ -38,8 +38,8 @@ urlpatterns = [
 
         path('crm/dashboard/', DashboardView.as_view()),
 
-        path('wh/client/create/', WHClientCreateView.as_view()),
-        path('wh/payment/create/', WHPaymentCreateView.as_view()),
+        path('wh/client/', WHClientView.as_view()),
+        path('wh/payment/', WHPaymentCreateView.as_view()),
         path('wh/expiring/', WHExpiringView.as_view()),
 
 

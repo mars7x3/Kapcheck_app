@@ -115,6 +115,12 @@ class PayoutSerializer(serializers.ModelSerializer):
     def get_partner_info(self, obj):
         return GetPartnerProfileSerializer(obj.partner).data
 
+    def create(self, validated_data):
+        payout = Payout.objects.create(**validated_data)
+        Payment.objects.filter(client__in=payout.partner.clients.all(),
+                               is_paid=False).update(is_paid=True)
+        return payout
+
 
 class PrizeSerializer(serializers.ModelSerializer):
     class Meta:

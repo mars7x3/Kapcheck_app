@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
 
-class WHClientCreateSerializer(serializers.Serializer):
+class WHClientSerializer(serializers.Serializer):
     client_id = serializers.CharField()
     client_fullname = serializers.CharField()
     client_phone = serializers.CharField()
-    client_promo_code = serializers.CharField()
+    client_promo_code = serializers.CharField(required=False)
 
 
 class WHPaymentSerializer(serializers.Serializer):
