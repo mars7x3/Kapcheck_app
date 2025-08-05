@@ -51,21 +51,12 @@ class PartnerProfileView(viewsets.ModelViewSet):
     queryset = PartnerProfile.objects.all().select_related('category')
     serializer_class = PartnerProfileSerializer
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return PartnerProfileListSerializer
-        return PartnerProfileSerializer
-
 
 class ClientView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Client.objects.all().select_related('partner')
     serializer_class = ClientSerializer
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ClientListSerializer
-        return ClientSerializer
 
 class PaymentView(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
