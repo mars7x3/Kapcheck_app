@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from db.models import PartnerProfile
+from db.models import PartnerProfile, Task
 
 from endpoints.serializers.tg_bot import BotSerializer
 
@@ -54,6 +54,7 @@ class PartnerBotDataView(APIView):
 
         tasks_data = [
             {
+                "id": task.id,
                 "description": task.description,
                 "is_done": task.is_done,
                 "client": {
@@ -61,7 +62,8 @@ class PartnerBotDataView(APIView):
                     "phone": task.client.phone,
                     "status": task.client.status
                 },
-                "created_at": task.created_at
+                "created_at": task.created_at,
+                "date": task.date
             }
             for task in partner.tasks.select_related('client').order_by('-created_at')
         ]
@@ -133,4 +135,24 @@ class PartnerBotDataView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class TaskUpdateView(APIView):
+    def post(self, request):
+        telegram_id = request.data.get('telegram_id')
+        task_id = request.data.get('task_id')
 
+        partner = PartnerProfile.objects.filter(telegram_id=telegram_id).first()
+        if not partner:
+            return Response({'text': 'Партнер с таким telegram_id не существует!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        task = Task.objects.filter(id=task_id,
+                                   partner=partner).first()
+        if not task:
+            return Response({'text': 'Задачи c такими данными не существует!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        task.is_done = True
+        task.save()
+
+        return Response('OK!',
+                        status=status.HTTP_200_OK)

@@ -8,8 +8,8 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views.crm import DashboardView, CategoryPartnerView, PartnerProfileView, ClientView, PaymentView, PayoutView, \
-    PrizeView, GoalView
-from .views.tg_bot import PartnerBotDataView
+    PrizeView, GoalView, TaskView
+from .views.tg_bot import PartnerBotDataView, TaskUpdateView
 from .views.webhook import WHClientView, WHPaymentCreateView, WHExpiringView
 
 router = DefaultRouter()
@@ -21,6 +21,8 @@ router.register('crm/payment', PaymentView)
 router.register('crm/payout', PayoutView)
 router.register('crm/prize', PrizeView)
 router.register('crm/goal', GoalView)
+router.register('crm/task', TaskView)
+
 
 
 urlpatterns = [
@@ -35,6 +37,8 @@ urlpatterns = [
         path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
         path('tgbot/data/', PartnerBotDataView.as_view()),
+        path('tgbot/task/update/', TaskUpdateView.as_view()),
+
 
         path('crm/dashboard/', DashboardView.as_view()),
 

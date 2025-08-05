@@ -108,6 +108,7 @@ class PartnerGoal(BaseModel):
 class Task(BaseModel):
     description = models.TextField()
     is_done = models.BooleanField(default=False)
+    date = models.DateField(blank=True, null=True)
     partner = models.ForeignKey(PartnerProfile,
                                 on_delete=models.CASCADE,
                                 related_name='tasks')

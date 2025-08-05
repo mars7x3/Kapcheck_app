@@ -6,11 +6,12 @@ from rest_framework.views import APIView
 
 from db.models import PartnerProfile, Client, Payment, Payout, Task, Goal, CategoryPartner, Prize
 from endpoints.serializers.crm import DashboardSerializer, CategoryPartnerSerializer, PartnerProfileSerializer, \
-    ClientSerializer, PaymentSerializer, PayoutSerializer, GoalSerializer, PrizeSerializer
+    ClientSerializer, PaymentSerializer, PayoutSerializer, GoalSerializer, PrizeSerializer, TaskSerializer, \
+    PartnerProfileListSerializer, ClientListSerializer
 
 
 class DashboardView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     @extend_schema(responses=DashboardSerializer())
     def get(self, request):
@@ -40,36 +41,57 @@ class DashboardView(APIView):
 
 
 class CategoryPartnerView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = CategoryPartner.objects.all()
     serializer_class = CategoryPartnerSerializer
 
 
 class PartnerProfileView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = PartnerProfile.objects.all().select_related('category')
     serializer_class = PartnerProfileSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return PartnerProfileListSerializer
+        return PartnerProfileSerializer
+
 
 class ClientView(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Client.objects.all().select_related('partner')
     serializer_class = ClientSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ClientListSerializer
+        return ClientSerializer
 
 class PaymentView(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Payment.objects.all().select_related('client')
     serializer_class = PaymentSerializer
 
 
 class PayoutView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Payout.objects.all().select_related('partner')
     serializer_class = PayoutSerializer
 
 
 class PrizeView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Prize.objects.all()
     serializer_class = PrizeSerializer
 
 
 class GoalView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Goal.objects.all().prefetch_related('prizes')
     serializer_class = GoalSerializer
 
+
+class TaskView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    queryset = Task.objects.all().select_related('partner', 'client')
+    serializer_class = TaskSerializer

@@ -33,10 +33,12 @@ class BotPartnerSerializer(serializers.Serializer):
 
 
 class BotTaskSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
     description = serializers.CharField()
     is_done = serializers.BooleanField()
     client = BotGetClientSerializer()
     created_at = serializers.DateTimeField()
+    date = serializers.DateField()
 
 
 class BotPayoutSerializer(serializers.Serializer):

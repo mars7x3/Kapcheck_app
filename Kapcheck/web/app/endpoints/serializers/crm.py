@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from db.models import CategoryPartner, PartnerProfile, Client, Payment, Payout, Goal, Prize
+from db.models import CategoryPartner, PartnerProfile, Client, Payment, Payout, Goal, Prize, Task
 
 
 class DashboardSerializer(serializers.Serializer):
@@ -31,6 +31,13 @@ class GetCategoryPartnerSerializer(serializers.ModelSerializer):
                   'title')
 
 
+class PartnerProfileListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PartnerProfile
+        fields = ('id',
+                  'fullname')
+
+
 class PartnerProfileSerializer(serializers.ModelSerializer):
     category_info = SerializerMethodField(read_only=True)
 
@@ -56,6 +63,13 @@ class PartnerProfileSerializer(serializers.ModelSerializer):
 class GetPartnerProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = PartnerProfile
+        fields = ('id',
+                  'fullname')
+
+
+class ClientListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
         fields = ('id',
                   'fullname')
 
@@ -154,3 +168,26 @@ class GoalSerializer(serializers.ModelSerializer):
 
     def get_prizes_info(self, obj):
         return GetPrizeSerializer(obj.prizes, many=True).data
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    partner_info = SerializerMethodField(read_only=True)
+    client_info = SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Task
+        fields = ('id',
+                  'description',
+                  'is_done',
+                  'date',
+                  'partner',
+                  'client',
+                  'is_active',
+                  'partner_info',
+                  'client_info')
+
+    def get_partner_info(self, obj):
+        return GetPartnerProfileSerializer(obj.partner).data
+
+    def get_client_info(self, obj):
+        return GetClientSerializer(obj.client).data
