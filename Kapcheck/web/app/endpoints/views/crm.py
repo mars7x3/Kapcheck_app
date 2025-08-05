@@ -1,3 +1,4 @@
+from django.db.models import Sum
 from drf_spectacular.utils import extend_schema
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -86,3 +87,15 @@ class TaskView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Task.objects.all().select_related('partner', 'client')
     serializer_class = TaskSerializer
+
+
+class SalaryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        partner_id = request.query_params.get('partner_id')
+        partner = PartnerProfile.objects.filter(id=partner_id).first()
+        amount = Payment.objects.filter(client__partner=partner,
+                                        is_paid=False).aggregate(total=Sum('amount'))['total'] or 0
+        salary = amount / 100 * partner.percent
+        return Response({"salary": salary}, status=status.HTTP_200_OK)

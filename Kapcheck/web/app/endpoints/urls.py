@@ -8,7 +8,7 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views.crm import DashboardView, CategoryPartnerView, PartnerProfileView, ClientView, PaymentView, PayoutView, \
-    PrizeView, GoalView, TaskView
+    PrizeView, GoalView, TaskView, SalaryView
 from .views.tg_bot import PartnerBotDataView, TaskUpdateView
 from .views.webhook import WHClientView, WHPaymentCreateView, WHExpiringView
 
@@ -41,6 +41,8 @@ urlpatterns = [
 
 
         path('crm/dashboard/', DashboardView.as_view()),
+        path('crm/salary/', SalaryView.as_view()),
+
 
         path('wh/client/', WHClientView.as_view()),
         path('wh/payment/', WHPaymentCreateView.as_view()),
