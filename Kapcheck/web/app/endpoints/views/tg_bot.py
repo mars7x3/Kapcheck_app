@@ -117,7 +117,7 @@ class PartnerBotDataView(APIView):
                     {
                         "title": prize.title,
                         "description": prize.description,
-                        "image": prize.image
+                        "image": prize.image.url
                     } for prize in pg.prizes.all()
                 ]
             }
