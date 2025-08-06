@@ -51,6 +51,7 @@ class BotPayoutSerializer(serializers.Serializer):
 class BotPrizeSerializer(serializers.Serializer):
     title = serializers.CharField()
     description = serializers.CharField()
+    image = serializers.ImageField()
 
 
 class BotGoalSerializer(serializers.Serializer):
