@@ -142,7 +142,8 @@ class PrizeSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'title',
                   'description',
-                  'is_active')
+                  'is_active',
+                  'image')
 
 
 class GetPrizeSerializer(serializers.ModelSerializer):
